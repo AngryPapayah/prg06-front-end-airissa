@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+:root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --primary: #2563eb;
+    --danger: #dc2626;
+    --border: #e2e8f0;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* Layout */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 2rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.home__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    font-size: 1.8rem;
+}
+
+/* Card */
+.card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 1.2rem;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card__price {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.card__location {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.card__description {
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.card__badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    background: #eef2ff;
+    color: #4338ca;
+    border-radius: 999px;
+    font-size: 0.75rem;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.45rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+}
+
+.btn--primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+}
+
+.btn--danger {
+    background: var(--danger);
+    color: white;
+    border: none;
+}
+
+.card__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+/* Form */
+.form {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    max-width: 520px;
+}
+
+.form__title {
+    margin-bottom: 1rem;
+}
+
+.form__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.form__field label {
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+.form__field input,
+.form__field textarea {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.form__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+/* States */
+.state {
+    color: var(--muted);
+}
+
+.state--error {
+    color: var(--danger);
+}
