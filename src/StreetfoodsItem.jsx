@@ -5,25 +5,41 @@ function StreetfoodsItem({item, onDelete}) {
 
     return (
         <article className="card relative">
+            {/* klikbare kaart → detail */}
             <Link
                 to={`/streetfoods/${id}`}
                 className="absolute inset-0 z-0"
                 aria-label={`Bekijk details van ${item.name}`}
             />
+
             <div className="relative z-10">
                 <h3 className="card__title">{item.name}</h3>
-                <p className="card__location">{item.city}, {item.country}</p>
+                <p className="card__location">
+                    {item.city}, {item.country}
+                </p>
 
-                <button
-                    className="btn btn--danger"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onDelete();
-                    }}
-                >
-                    Verwijderen
-                </button>
+                <div className="card__actions">
+                    {/* ✏️ BEWERKEN */}
+                    <Link
+                        to={`/edit/${id}`}
+                        className="btn btn--primary"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        Bewerken
+                    </Link>
+
+                    {/* 🗑️ DELETE */}
+                    <button
+                        className="btn btn--danger"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onDelete();
+                        }}
+                    >
+                        Verwijderen
+                    </button>
+                </div>
             </div>
         </article>
     );

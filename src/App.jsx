@@ -4,6 +4,7 @@ import Home from "./Home.jsx";
 import Create from "./Create.jsx";
 import About from "./About.jsx";
 import StreetfoodDetail from "./StreetfoodDetail.jsx";
+import Edit from "./Edit.jsx";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
                 path: "/streetfoods/:id",
                 element: <StreetfoodDetail/>,
             },
+            {
+                path: "/edit/:id",
+                element: <Edit/>,
+            },
+
         ],
     },
 ]);
