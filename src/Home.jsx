@@ -22,7 +22,7 @@ function Home() {
             const data = await res.json();
             setItems(Array.isArray(data.items) ? data.items : []);
         } catch {
-            setError("Laden mislukt");
+            setError("Loading failed");
         } finally {
             setLoading(false);
         }
@@ -33,7 +33,7 @@ function Home() {
     }, []);
 
     async function deleteItem(id) {
-        if (!confirm("Weet je het zeker?")) return;
+        if (!confirm("Are you sure to delete?")) return;
         await fetch(`${API}/${id}`, {method: "DELETE"});
         setItems((prev) => prev.filter((i) => (i.id ?? i._id) !== id));
     }
@@ -80,7 +80,7 @@ function Home() {
                 <h2 className="page-title">Streetfoods</h2>
 
                 <Link to="/create" className="btn btn--primary">
-                    + Nieuw streetfood
+                    + New streetfood
                 </Link>
             </div>
 
@@ -88,19 +88,19 @@ function Home() {
             <div className="mb-6 grid gap-3 sm:grid-cols-2">
                 <div>
                     <label className="mb-1 block text-sm text-slate-600">
-                        Zoeken
+                        Search
                     </label>
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Zoek op naam, stad, land, smaak..."
+                        placeholder="Search by name, city, country, taste…"
                         className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
                     />
                 </div>
 
                 <div>
                     <label className="mb-1 block text-sm text-slate-600">
-                        Filter op land
+                        Filter by Country
                     </label>
                     <select
                         value={country}
@@ -109,7 +109,7 @@ function Home() {
                     >
                         {countries.map((c) => (
                             <option key={c} value={c}>
-                                {c === "all" ? "Alle landen" : c}
+                                {c === "all" ? "All County" : c}
                             </option>
                         ))}
                     </select>
@@ -117,7 +117,7 @@ function Home() {
             </div>
 
             {/* status */}
-            {loading && <p className="state">Laden…</p>}
+            {loading && <p className="state">Loading…</p>}
             {error && <p className="state state--error">{error}</p>}
 
             {/* ✅ Result count */}

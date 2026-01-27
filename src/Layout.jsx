@@ -11,7 +11,7 @@ function Layout() {
                     </h1>
 
                     <p className="text-slate-600">
-                        Ontdek streetfood van over de hele wereld
+                        Explore street food from around the world!
                     </p>
 
                     {/* Navigatie */}
@@ -27,7 +27,7 @@ function Layout() {
                             to="/create"
                             className="rounded-lg bg-slate-200 px-4 py-2 text-slate-900 transition hover:bg-slate-300"
                         >
-                            Nieuw streetfood
+                            Create streetfood
                         </Link>
 
                         <Link

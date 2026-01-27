@@ -34,12 +34,12 @@ function Edit() {
         navigate(`/streetfoods/${id}`);
     }
 
-    if (loading) return <p>Laden…</p>;
-    if (!item) return <p>Item niet gevonden</p>;
+    if (loading) return <p>Loading…</p>;
+    if (!item) return <p>Item not found</p>;
 
     return (
         <>
-            <h2 className="page-title">Streetfood bewerken</h2>
+            <h2 className="page-title">Streetfood Edit</h2>
 
             <StreetfoodForm
                 initialValues={item}

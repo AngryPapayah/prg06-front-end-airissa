@@ -31,7 +31,7 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
         required.forEach((field) => {
             const v = values[field];
             if (typeof v !== "string" || v.trim() === "") {
-                nextErrors[field] = "Dit veld is verplicht";
+                nextErrors[field] = "This field is required";
             }
         });
 
@@ -60,12 +60,12 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
     return (
         <form onSubmit={submit} className="rounded-2xl bg-white p-6 shadow-sm">
             <h2 className="mb-4 text-xl font-bold text-slate-900">
-                {initialValues?.id || initialValues?._id ? "Streetfood bewerken" : "Nieuw streetfood"}
+                {initialValues?.id || initialValues?._id ? "Streetfood edit" : "create streetfood"}
             </h2>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                    <label className="mb-1 block text-sm text-slate-600">Naam</label>
+                    <label className="mb-1 block text-sm text-slate-600">Dish name</label>
                     <input
                         name="name"
                         value={form.name}
@@ -77,7 +77,7 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
                 </div>
 
                 <div>
-                    <label className="mb-1 block text-sm text-slate-600">Land</label>
+                    <label className="mb-1 block text-sm text-slate-600">Country</label>
                     <input
                         name="country"
                         value={form.country}
@@ -89,7 +89,7 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
                 </div>
 
                 <div>
-                    <label className="mb-1 block text-sm text-slate-600">Stad</label>
+                    <label className="mb-1 block text-sm text-slate-600">City</label>
                     <input
                         name="city"
                         value={form.city}
@@ -101,7 +101,7 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
                 </div>
 
                 <div>
-                    <label className="mb-1 block text-sm text-slate-600">Prijs (€)</label>
+                    <label className="mb-1 block text-sm text-slate-600">Price (€)</label>
                     <input
                         name="price"
                         type="number"
@@ -115,7 +115,7 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
             </div>
 
             <div className="mt-4">
-                <label className="mb-1 block text-sm text-slate-600">Smaak</label>
+                <label className="mb-1 block text-sm text-slate-600">Taste</label>
                 <input
                     name="taste"
                     value={form.taste}
@@ -127,7 +127,7 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
             </div>
 
             <div className="mt-4">
-                <label className="mb-1 block text-sm text-slate-600">Beschrijving</label>
+                <label className="mb-1 block text-sm text-slate-600">Description</label>
                 <textarea
                     name="description"
                     value={form.description}
@@ -143,10 +143,10 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
 
             <div className="mt-6 flex justify-end gap-3">
                 <button type="button" onClick={onCancel} className="rounded-lg bg-slate-200 px-4 py-2">
-                    Annuleren
+                    Cancel
                 </button>
                 <button type="submit" className="rounded-lg bg-slate-900 px-4 py-2 text-white">
-                    Opslaan
+                    Save
                 </button>
             </div>
         </form>

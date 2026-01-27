@@ -25,7 +25,7 @@ function StreetfoodsItem({item, onDelete}) {
                         className="btn btn--primary"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        Bewerken
+                        Edit
                     </Link>
 
                     {/* 🗑️ DELETE */}
@@ -37,7 +37,7 @@ function StreetfoodsItem({item, onDelete}) {
                             onDelete();
                         }}
                     >
-                        Verwijderen
+                        Delete
                     </button>
                 </div>
             </div>

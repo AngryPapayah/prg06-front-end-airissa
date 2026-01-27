@@ -13,7 +13,7 @@ function StreetfoodDetail() {
     useEffect(() => {
         // ✅ Guard: geen id = niet fetchen
         if (!id) {
-            setError("Geen geldig ID gevonden in de URL");
+            setError("404 Not Found");
             setLoading(false);
             return;
         }
@@ -28,7 +28,7 @@ function StreetfoodDetail() {
                 });
 
                 if (!res.ok) {
-                    throw new Error("Detail ophalen mislukt");
+                    throw new Error("404 Not Found");
                 }
 
                 const data = await res.json();
@@ -36,7 +36,7 @@ function StreetfoodDetail() {
                 // API kan { item: {...} } of direct {...} teruggeven
                 setItem(data.item ?? data);
             } catch (e) {
-                setError("Detail laden mislukt");
+                setError("404 Not Found");
             } finally {
                 setLoading(false);
             }
@@ -46,7 +46,7 @@ function StreetfoodDetail() {
     }, [id]);
 
     if (loading) {
-        return <p className="text-slate-600">Laden…</p>;
+        return <p className="text-slate-600">Loading…</p>;
     }
 
     if (error) {
@@ -57,7 +57,7 @@ function StreetfoodDetail() {
                     to="/"
                     className="inline-block rounded-lg bg-slate-900 px-4 py-2 text-white"
                 >
-                    Terug naar Home
+                    Home
                 </Link>
             </section>
         );
@@ -86,12 +86,12 @@ function StreetfoodDetail() {
 
             <div className="space-y-4 text-slate-700">
                 <div>
-                    <p className="text-sm font-semibold text-slate-900">Smaak</p>
+                    <p className="text-sm font-semibold text-slate-900">Taste</p>
                     <p>{item.taste}</p>
                 </div>
 
                 <div>
-                    <p className="text-sm font-semibold text-slate-900">Beschrijving</p>
+                    <p className="text-sm font-semibold text-slate-900">Description</p>
                     <p>{item.description}</p>
                 </div>
             </div>
@@ -101,7 +101,7 @@ function StreetfoodDetail() {
                     to="/"
                     className="inline-block rounded-lg bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-800"
                 >
-                    Terug naar Home
+                    Home
                 </Link>
             </div>
         </section>

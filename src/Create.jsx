@@ -18,7 +18,7 @@ function Create() {
 
     return (
         <>
-            <h2 className="page-title">Nieuw streetfood</h2>
+            <h2 className="page-title">New streetfood</h2>
 
             <StreetfoodForm
                 onSubmit={createItem}
