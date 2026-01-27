@@ -7,19 +7,31 @@ function Create() {
     const navigate = useNavigate();
 
     async function createItem(payload) {
-        await fetch(API, {
+        const res = await fetch(API, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify(payload),
         });
 
+        if (!res.ok) {
+            const msg = await res.text().catch(() => "");
+            alert(msg || "Aanmaken mislukt");
+            return;
+        }
+
+        // optioneel: created item lezen
+        await res.json().catch(() => null);
+
+        // terug naar home (home doet opnieuw GET)
         navigate("/");
     }
 
     return (
         <>
-            <h2 className="page-title">New streetfood</h2>
-
+            <h2 className="page-title">Nieuw streetfood</h2>
             <StreetfoodForm
                 onSubmit={createItem}
                 onCancel={() => navigate("/")}
