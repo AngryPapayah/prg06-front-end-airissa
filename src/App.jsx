@@ -5,6 +5,8 @@ import Create from "./Create.jsx";
 import About from "./About.jsx";
 import StreetfoodDetail from "./StreetfoodDetail.jsx";
 import Edit from "./Edit.jsx";
+import NotFound from "./NotFound.jsx";
+
 
 const router = createBrowserRouter([
     {
@@ -30,6 +32,11 @@ const router = createBrowserRouter([
                 path: "/edit/:id",
                 element: <Edit/>,
             },
+            {
+                path: "*",
+                element: <NotFound/>
+            },
+
 
         ],
     },

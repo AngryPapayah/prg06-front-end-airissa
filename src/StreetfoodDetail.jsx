@@ -8,12 +8,14 @@ function StreetfoodDetail() {
 
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+
+    const [errorCode, setErrorCode] = useState(null); // 404 / 500 / "network"
+    const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
-        //  Guard: geen id = niet fetchen
         if (!id) {
-            setError("404 Not Found");
+            setErrorCode(404);
+            setErrorMsg("Page does not excist.");
             setLoading(false);
             return;
         }
@@ -21,22 +23,33 @@ function StreetfoodDetail() {
         async function loadDetail() {
             try {
                 setLoading(true);
-                setError("");
+                setErrorCode(null);
+                setErrorMsg("");
 
                 const res = await fetch(`${API}/${id}`, {
                     headers: {Accept: "application/json"},
                 });
 
+                if (res.status === 404) {
+                    setErrorCode(404);
+                    setErrorMsg("Streetfood not found.");
+                    setItem(null);
+                    return;
+                }
+
                 if (!res.ok) {
-                    throw new Error("404 Not Found");
+                    setErrorCode(res.status);
+                    setErrorMsg("Something went wrong getting the details.");
+                    setItem(null);
+                    return;
                 }
 
                 const data = await res.json();
-
-                // API kan { item: {...} } of direct {...} teruggeven
                 setItem(data.item ?? data);
-            } catch (e) {
-                setError("404 Not Found");
+            } catch {
+                setErrorCode("network");
+                setErrorMsg("Network error: Unable to reach server..");
+                setItem(null);
             } finally {
                 setLoading(false);
             }
@@ -45,14 +58,16 @@ function StreetfoodDetail() {
         loadDetail();
     }, [id]);
 
-    if (loading) {
-        return <p className="text-slate-600">Loading…</p>;
-    }
+    if (loading) return <p className="text-slate-600">Loading…</p>;
 
-    if (error) {
+    if (errorCode) {
         return (
             <section className="rounded-2xl bg-white p-6 shadow-sm">
-                <p className="mb-4 text-red-600">{error}</p>
+                <h2 className="mb-2 text-2xl font-bold text-slate-900">
+                    {errorCode === 404 ? "404 Not Found" : "Error"}
+                </h2>
+                <p className="mb-4 text-slate-700">{errorMsg}</p>
+
                 <Link
                     to="/"
                     className="inline-block rounded-lg bg-slate-900 px-4 py-2 text-white"
@@ -63,9 +78,7 @@ function StreetfoodDetail() {
         );
     }
 
-    if (!item) {
-        return null;
-    }
+    if (!item) return null;
 
     return (
         <section className="rounded-2xl bg-white p-6 shadow-sm">
