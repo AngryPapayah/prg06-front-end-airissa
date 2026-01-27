@@ -1,26 +1,27 @@
-function StreetfoodsItem({item, onDelete, onEdit}) {
+import {Link} from "react-router-dom";
+
+function StreetfoodsItem({item, onDelete}) {
+    const id = item.id ?? item._id;
+
     return (
-        <article className="card">
-            <div className="card__header">
-                <h2 className="card__title">{item.name}</h2>
-                <span className="card__price">€ {item.price}</span>
-            </div>
+        <article className="card relative">
+            <Link
+                to={`/streetfoods/${id}`}
+                className="absolute inset-0 z-0"
+                aria-label={`Bekijk details van ${item.name}`}
+            />
+            <div className="relative z-10">
+                <h3 className="card__title">{item.name}</h3>
+                <p className="card__location">{item.city}, {item.country}</p>
 
-            <p className="card__location">
-                {item.city}, {item.country}
-            </p>
-
-            <p className="card__description">{item.description}</p>
-
-            <div className="card__meta">
-                <span className="card__badge">{item.taste}</span>
-            </div>
-
-            <div className="card__actions">
-                <button className="btn btn--primary" onClick={onEdit}>
-                    Bewerken
-                </button>
-                <button className="btn btn--danger" onClick={onDelete}>
+                <button
+                    className="btn btn--danger"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onDelete();
+                    }}
+                >
                     Verwijderen
                 </button>
             </div>

@@ -11,6 +11,13 @@ function StreetfoodDetail() {
     const [error, setError] = useState("");
 
     useEffect(() => {
+        // ✅ Guard: geen id = niet fetchen
+        if (!id) {
+            setError("Geen geldig ID gevonden in de URL");
+            setLoading(false);
+            return;
+        }
+
         async function loadDetail() {
             try {
                 setLoading(true);
@@ -20,11 +27,13 @@ function StreetfoodDetail() {
                     headers: {Accept: "application/json"},
                 });
 
-                if (!res.ok) throw new Error("Detail ophalen mislukt");
+                if (!res.ok) {
+                    throw new Error("Detail ophalen mislukt");
+                }
 
                 const data = await res.json();
 
-                // sommige API's sturen direct het object terug, sommige onder "item"
+                // API kan { item: {...} } of direct {...} teruggeven
                 setItem(data.item ?? data);
             } catch (e) {
                 setError("Detail laden mislukt");
@@ -36,15 +45,17 @@ function StreetfoodDetail() {
         loadDetail();
     }, [id]);
 
-    if (loading) return <p className="text-slate-600">Laden…</p>;
+    if (loading) {
+        return <p className="text-slate-600">Laden…</p>;
+    }
 
     if (error) {
         return (
             <section className="rounded-2xl bg-white p-6 shadow-sm">
-                <p className="text-red-600">{error}</p>
+                <p className="mb-4 text-red-600">{error}</p>
                 <Link
                     to="/"
-                    className="mt-4 inline-block rounded-lg bg-slate-900 px-4 py-2 text-white"
+                    className="inline-block rounded-lg bg-slate-900 px-4 py-2 text-white"
                 >
                     Terug naar Home
                 </Link>
@@ -52,7 +63,9 @@ function StreetfoodDetail() {
         );
     }
 
-    if (!item) return null;
+    if (!item) {
+        return null;
+    }
 
     return (
         <section className="rounded-2xl bg-white p-6 shadow-sm">

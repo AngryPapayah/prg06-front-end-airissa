@@ -12,9 +12,11 @@ function Home() {
     async function loadItems() {
         try {
             setLoading(true);
+            setError("");
+
             const res = await fetch(API, {headers: {Accept: "application/json"}});
             const data = await res.json();
-            setItems(data.items);
+            setItems(Array.isArray(data.items) ? data.items : []);
         } catch {
             setError("Laden mislukt");
         } finally {
@@ -28,8 +30,9 @@ function Home() {
 
     async function deleteItem(id) {
         if (!confirm("Weet je het zeker?")) return;
+
         await fetch(`${API}/${id}`, {method: "DELETE"});
-        setItems((prev) => prev.filter((i) => i.id !== id));
+        setItems((prev) => prev.filter((i) => (i.id ?? i._id) !== id));
     }
 
     return (
@@ -46,13 +49,17 @@ function Home() {
             {error && <p className="state state--error">{error}</p>}
 
             <div className="grid">
-                {items.map((item) => (
-                    <StreetfoodsItem
-                        key={item.id}
-                        item={item}
-                        onDelete={() => deleteItem(item.id)}
-                    />
-                ))}
+                {items.map((item) => {
+                    const id = item.id ?? item._id; // ✅ FIX
+                    return (
+                        <StreetfoodsItem
+                            key={id}
+                            item={item}
+                            id={id}
+                            onDelete={() => deleteItem(id)}
+                        />
+                    );
+                })}
             </div>
         </section>
     );

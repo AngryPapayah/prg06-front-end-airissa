@@ -10,68 +10,142 @@ function StreetfoodForm({initialValues = {}, onSubmit, onCancel}) {
         price: initialValues.price || "",
     });
 
+    const [errors, setErrors] = useState({});
+
     function change(e) {
-        setForm({...form, [e.target.name]: e.target.value});
+        const {name, value} = e.target;
+        setForm((prev) => ({...prev, [name]: value}));
+
+        // als user typt: error voor dat veld weghalen
+        setErrors((prev) => {
+            const next = {...prev};
+            delete next[name];
+            return next;
+        });
     }
 
-    function submit(e) {
-        e.preventDefault();
-        onSubmit({...form, price: Number(form.price)});
+    function validate(values) {
+        const nextErrors = {};
+        const required = ["name", "country", "city", "description", "taste", "price"];
+
+        required.forEach((field) => {
+            const v = values[field];
+            if (typeof v !== "string" || v.trim() === "") {
+                nextErrors[field] = "Dit veld is verplicht";
+            }
+        });
+
+        return nextErrors;
     }
+
+    async function submit(e) {
+        e.preventDefault();
+
+        const nextErrors = validate(form);
+        setErrors(nextErrors);
+
+        // als er errors zijn: niet submitten
+        if (Object.keys(nextErrors).length > 0) return;
+
+        await onSubmit({
+            ...form,
+            // als jij price als string wilt opslaan, laat dit weg
+            price: Number(form.price),
+        });
+    }
+
+    const fieldClass = (name) =>
+        `w-full rounded-lg border p-2 ${errors[name] ? "border-red-500" : "border-slate-200"}`;
 
     return (
-        <form onSubmit={submit} className="form">
-            <h2 className="form__title">
-                {initialValues.name ? "Streetfood bewerken" : "Nieuw streetfood"}
+        <form onSubmit={submit} className="rounded-2xl bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-xl font-bold text-slate-900">
+                {initialValues?.id || initialValues?._id ? "Streetfood bewerken" : "Nieuw streetfood"}
             </h2>
 
-            <div className="form__grid">
-                <div className="form__field">
-                    <label>Naam</label>
-                    <input name="name" value={form.name} onChange={change}/>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <label className="mb-1 block text-sm text-slate-600">Naam</label>
+                    <input
+                        name="name"
+                        value={form.name}
+                        onChange={change}
+                        className={fieldClass("name")}
+                        required
+                    />
+                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                 </div>
 
-                <div className="form__field">
-                    <label>Land</label>
-                    <input name="country" value={form.country} onChange={change}/>
+                <div>
+                    <label className="mb-1 block text-sm text-slate-600">Land</label>
+                    <input
+                        name="country"
+                        value={form.country}
+                        onChange={change}
+                        className={fieldClass("country")}
+                        required
+                    />
+                    {errors.country && <p className="mt-1 text-sm text-red-600">{errors.country}</p>}
                 </div>
 
-                <div className="form__field">
-                    <label>Stad</label>
-                    <input name="city" value={form.city} onChange={change}/>
+                <div>
+                    <label className="mb-1 block text-sm text-slate-600">Stad</label>
+                    <input
+                        name="city"
+                        value={form.city}
+                        onChange={change}
+                        className={fieldClass("city")}
+                        required
+                    />
+                    {errors.city && <p className="mt-1 text-sm text-red-600">{errors.city}</p>}
                 </div>
 
-                <div className="form__field">
-                    <label>Prijs (€)</label>
+                <div>
+                    <label className="mb-1 block text-sm text-slate-600">Prijs (€)</label>
                     <input
                         name="price"
                         type="number"
                         value={form.price}
                         onChange={change}
+                        className={fieldClass("price")}
+                        required
                     />
+                    {errors.price && <p className="mt-1 text-sm text-red-600">{errors.price}</p>}
                 </div>
             </div>
 
-            <div className="form__field">
-                <label>Smaak</label>
-                <input name="taste" value={form.taste} onChange={change}/>
+            <div className="mt-4">
+                <label className="mb-1 block text-sm text-slate-600">Smaak</label>
+                <input
+                    name="taste"
+                    value={form.taste}
+                    onChange={change}
+                    className={fieldClass("taste")}
+                    required
+                />
+                {errors.taste && <p className="mt-1 text-sm text-red-600">{errors.taste}</p>}
             </div>
 
-            <div className="form__field">
-                <label>Beschrijving</label>
+            <div className="mt-4">
+                <label className="mb-1 block text-sm text-slate-600">Beschrijving</label>
                 <textarea
                     name="description"
                     value={form.description}
                     onChange={change}
-                    rows="3"
+                    className={fieldClass("description")}
+                    rows={3}
+                    required
                 />
+                {errors.description && (
+                    <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                )}
             </div>
 
-            <div className="form__actions">
-                <button type="button" className="btn" onClick={onCancel}>
+            <div className="mt-6 flex justify-end gap-3">
+                <button type="button" onClick={onCancel} className="rounded-lg bg-slate-200 px-4 py-2">
                     Annuleren
                 </button>
-                <button type="submit" className="btn btn--primary">
+                <button type="submit" className="rounded-lg bg-slate-900 px-4 py-2 text-white">
                     Opslaan
                 </button>
             </div>
