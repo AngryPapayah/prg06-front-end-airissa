@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Link} from "react-router-dom";
 import StreetfoodsItem from "./StreetfoodsItem.jsx";
 
@@ -8,6 +8,10 @@ function Home() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
+    // ✅ filters
+    const [search, setSearch] = useState("");
+    const [country, setCountry] = useState("all");
 
     async function loadItems() {
         try {
@@ -30,10 +34,45 @@ function Home() {
 
     async function deleteItem(id) {
         if (!confirm("Weet je het zeker?")) return;
-
         await fetch(`${API}/${id}`, {method: "DELETE"});
         setItems((prev) => prev.filter((i) => (i.id ?? i._id) !== id));
     }
+
+    // ✅ landen lijst voor dropdown
+    const countries = useMemo(() => {
+        const set = new Set();
+        items.forEach((i) => {
+            const c = String(i.country ?? "").trim();
+            if (c) set.add(c);
+        });
+        return ["all", ...Array.from(set).sort((a, b) => a.localeCompare(b))];
+    }, [items]);
+
+    // ✅ filteren van items
+    const filteredItems = useMemo(() => {
+        const q = search.trim().toLowerCase();
+
+        return items.filter((i) => {
+            const matchesCountry =
+                country === "all" ||
+                String(i.country ?? "").trim().toLowerCase() === country.toLowerCase();
+
+            if (!matchesCountry) return false;
+
+            if (!q) return true;
+
+            const haystack = [
+                i.name,
+                i.country,
+                i.city,
+                i.taste,
+            ]
+                .map((v) => String(v ?? "").toLowerCase())
+                .join(" ");
+
+            return haystack.includes(q);
+        });
+    }, [items, search, country]);
 
     return (
         <section>
@@ -45,17 +84,59 @@ function Home() {
                 </Link>
             </div>
 
+            {/* ✅ FILTERS */}
+            <div className="mb-6 grid gap-3 sm:grid-cols-2">
+                <div>
+                    <label className="mb-1 block text-sm text-slate-600">
+                        Zoeken
+                    </label>
+                    <input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Zoek op naam, stad, land, smaak..."
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+                    />
+                </div>
+
+                <div>
+                    <label className="mb-1 block text-sm text-slate-600">
+                        Filter op land
+                    </label>
+                    <select
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+                    >
+                        {countries.map((c) => (
+                            <option key={c} value={c}>
+                                {c === "all" ? "Alle landen" : c}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            {/* status */}
             {loading && <p className="state">Laden…</p>}
             {error && <p className="state state--error">{error}</p>}
 
+            {/* ✅ Result count */}
+            {!loading && !error && (
+                <p className="mb-4 text-sm text-slate-600">
+                    Resultaten: <span className="font-semibold">{filteredItems.length}</span>
+                    {filteredItems.length !== items.length && (
+                        <> (van {items.length})</>
+                    )}
+                </p>
+            )}
+
             <div className="grid">
-                {items.map((item) => {
-                    const id = item.id ?? item._id; // ✅ FIX
+                {filteredItems.map((item) => {
+                    const id = item.id ?? item._id;
                     return (
                         <StreetfoodsItem
                             key={id}
                             item={item}
-                            id={id}
                             onDelete={() => deleteItem(id)}
                         />
                     );
