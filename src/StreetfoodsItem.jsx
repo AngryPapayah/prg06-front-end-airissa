@@ -9,7 +9,7 @@ function StreetfoodsItem({item, onDelete}) {
             <Link
                 to={`/streetfoods/${id}`}
                 className="absolute inset-0 z-0"
-                aria-label={`Bekijk details van ${item.name}`}
+                aria-label={`Check the details of ${item.name}`}
             />
 
             <div className="relative z-10">
@@ -19,7 +19,7 @@ function StreetfoodsItem({item, onDelete}) {
                 </p>
 
                 <div className="card__actions">
-                    {/* ✏️ BEWERKEN */}
+                    {/*  BEWERKEN */}
                     <Link
                         to={`/edit/${id}`}
                         className="btn btn--primary"
@@ -28,7 +28,7 @@ function StreetfoodsItem({item, onDelete}) {
                         Edit
                     </Link>
 
-                    {/* 🗑️ DELETE */}
+                    {/*  DELETE */}
                     <button
                         className="btn btn--danger"
                         onClick={(e) => {

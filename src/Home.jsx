@@ -9,7 +9,7 @@ function Home() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    // ✅ filters
+    //  filters
     const [search, setSearch] = useState("");
     const [country, setCountry] = useState("all");
 
@@ -38,7 +38,7 @@ function Home() {
         setItems((prev) => prev.filter((i) => (i.id ?? i._id) !== id));
     }
 
-    // ✅ landen lijst voor dropdown
+    // landen lijst voor dropdown
     const countries = useMemo(() => {
         const set = new Set();
         items.forEach((i) => {
@@ -48,7 +48,7 @@ function Home() {
         return ["all", ...Array.from(set).sort((a, b) => a.localeCompare(b))];
     }, [items]);
 
-    // ✅ filteren van items
+    // filteren van items
     const filteredItems = useMemo(() => {
         const q = search.trim().toLowerCase();
 
@@ -84,7 +84,7 @@ function Home() {
                 </Link>
             </div>
 
-            {/* ✅ FILTERS */}
+            {/*  FILTERS */}
             <div className="mb-6 grid gap-3 sm:grid-cols-2">
                 <div>
                     <label className="mb-1 block text-sm text-slate-600">

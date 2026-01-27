@@ -11,7 +11,7 @@ function StreetfoodDetail() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        // ✅ Guard: geen id = niet fetchen
+        //  Guard: geen id = niet fetchen
         if (!id) {
             setError("404 Not Found");
             setLoading(false);
